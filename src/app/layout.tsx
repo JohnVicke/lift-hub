@@ -19,19 +19,24 @@ export const metadata = {
 
 export default function RootLayout({
   children,
+  modals,
 }: {
   children: React.ReactNode;
+  modals: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${monaSans.variable}`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            {modals}
+            {children}
+          </TRPCReactProvider>
         </ThemeProvider>
       </body>
     </html>
