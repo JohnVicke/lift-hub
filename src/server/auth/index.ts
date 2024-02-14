@@ -1,6 +1,6 @@
 import { Lucia } from "lucia";
 import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite";
-import { client, schema } from "../db";
+import { client, type schema } from "../db";
 import type { Session, User } from "lucia";
 import { env } from "~/env";
 import { type InferSelectModel } from "drizzle-orm";
@@ -9,8 +9,8 @@ import { cookies } from "next/headers";
 import { Google } from "arctic";
 
 const adapter = new LibSQLAdapter(client, {
-  user: schema.users._.name,
-  session: schema.sessions._.name,
+  user: "user",
+  session: "session",
 });
 
 export const lucia = new Lucia(adapter, {
@@ -70,8 +70,12 @@ declare module "lucia" {
   }
 }
 
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : `http://localhost:${process.env.PORT ?? 3000}`;
+
 export const google = new Google(
   env.GOOGLE_CLIENT_ID,
   env.GOOGLE_CLIENT_SECRET,
-  "http://localhost:3000/auth/google",
+  `${baseUrl}/api/auth/google/callback`,
 );

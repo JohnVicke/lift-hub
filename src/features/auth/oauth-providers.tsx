@@ -1,26 +1,24 @@
-"use client";
-
-import { Button } from "~/components/ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import { Apple, Google } from "~/components/ui/icon";
-import { signIn } from "next-auth/react";
+import { cn } from "~/lib/utils";
 
 export function OauthProviders() {
   return (
     <div className="flex flex-1 gap-x-4">
-      <Button
-        className="inline-flex flex-1 gap-2"
-        onClick={() => signIn("google")}
+      <a
+        href="/api/auth/google"
+        className={cn(buttonVariants(), "inline-flex flex-1 gap-2")}
       >
         <Google className="h-4 w-4" />
         Login with Google
-      </Button>
-      <Button
-        className="inline-flex flex-1 gap-2"
-        onClick={() => signIn("apple")}
+      </a>
+      <a
+        className={cn(buttonVariants(), "inline-flex flex-1 gap-2")}
+        href="/api/auth/apple"
       >
         <Apple className="h-4 w-4" />
         Login with Apple
-      </Button>
+      </a>
     </div>
   );
 }
