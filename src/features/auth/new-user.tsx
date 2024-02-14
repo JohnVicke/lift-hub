@@ -18,19 +18,16 @@ import { cn } from "~/lib/utils";
 import { completeSignUpInput } from "~/validators/auth/complete-signup";
 import { api } from "~/trpc/react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 const formSchema = completeSignUpInput;
 
 type FormValues = z.infer<typeof formSchema>;
 
 export function NewUser() {
-  const session = useSession();
   const router = useRouter();
 
   const { mutate } = api.auth.completeSignUp.useMutation({
     async onSuccess() {
-      await session.update();
       router.push("/dashboard");
     },
   });
