@@ -9,25 +9,17 @@ import { db } from "~/server/db";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env";
 
-/**
- * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
- * object and keep type safety.
- *
- * @see https://next-auth.js.org/getting-started/typescript#module-augmentation
- */
 declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
+      role?: string;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    role?: string;
+  }
 }
 
 export const authOptions: NextAuthOptions = {
@@ -39,14 +31,31 @@ export const authOptions: NextAuthOptions = {
     newUser: "/auth/new-user",
   },
   callbacks: {
-    session: ({ session, user }) => {
-      return {
+    session: async ({ session, user, trigger }) => {
+      let role;
+
+      if (trigger === "update") {
+        const dbRole = await db.query.users.findFirst({
+          where: (dbUser, { eq }) => eq(dbUser.id, user.id),
+          columns: { role: true },
+        });
+        console.log(dbRole);
+
+        role = dbRole?.role;
+      }
+
+      const sesh = {
         ...session,
         user: {
           ...session.user,
           id: user.id,
+          role,
         },
       };
+
+      console.log({ sesh });
+
+      return sesh;
     },
   },
   adapter: DrizzleAdapter(db) as Adapter,

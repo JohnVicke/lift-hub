@@ -32,13 +32,12 @@ export function CommandKSearch() {
   return (
     <>
       <Button
-        className="group inline-flex justify-between text-muted-foreground"
+        className="group inline-flex justify-between text-muted-foreground md:w-[100px] lg:w-[300px]"
         variant="outline"
         onClick={() => setOpen(true)}
       >
-        <span>Search application...</span>
-        <span className="text-sm">
-          Press{" "}
+        <span className="truncate">Search application...</span>
+        <span className="hidden text-sm lg:block">
           <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 group-hover:border">
             <span className="text-xs">⌘</span>K
           </kbd>

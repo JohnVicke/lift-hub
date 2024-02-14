@@ -8,33 +8,16 @@ import {
 } from "drizzle-orm/sqlite-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
-export const posts = sqliteTable(
-  "post",
-  {
-    id: int("id", { mode: "number" }).primaryKey({ autoIncrement: true }),
-    name: text("name", { length: 256 }),
-    createdById: text("createdById", { length: 255 })
-      .notNull()
-      .references(() => users.id),
-    createdAt: int("created_at", { mode: "timestamp" })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: int("updatedAt", { mode: "timestamp" }),
-  },
-  (example) => ({
-    createdByIdIdx: index("createdById_idx").on(example.createdById),
-    nameIndex: index("name_idx").on(example.name),
-  }),
-);
-
 export const users = sqliteTable("user", {
   id: text("id", { length: 255 }).notNull().primaryKey(),
+  username: text("username", { length: 255 }),
   name: text("name", { length: 255 }),
   email: text("email", { length: 255 }).notNull(),
   emailVerified: int("emailVerified", {
     mode: "timestamp",
   }).default(sql`CURRENT_TIMESTAMP`),
   image: text("image", { length: 255 }),
+  role: text("role", { length: 255 }),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({

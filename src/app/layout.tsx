@@ -2,8 +2,7 @@ import "~/styles/globals.css";
 
 import localFont from "next/font/local";
 
-import { TRPCReactProvider } from "~/trpc/react";
-import { ThemeProvider } from "~/components/theme-provider";
+import { RootProviders } from "./root-providers";
 
 const monaSans = localFont({
   src: "../styles/mona-sans.woff2",
@@ -17,27 +16,15 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
-  modals,
 }: {
   children: React.ReactNode;
-  modals: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans ${monaSans.variable}`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TRPCReactProvider>
-            {modals}
-            {children}
-          </TRPCReactProvider>
-        </ThemeProvider>
+        <RootProviders>{children}</RootProviders>
       </body>
     </html>
   );

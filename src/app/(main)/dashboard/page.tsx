@@ -1,6 +1,3 @@
-import { unstable_noStore as noStore } from "next/cache";
-
-export default function DashboardPage() {
-  noStore();
-  return <div>dashboard screen</div>;
+export default function Page() {
+  return <div>coach dashboard</div>;
 }

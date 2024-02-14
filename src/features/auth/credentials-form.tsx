@@ -16,15 +16,17 @@ import { Button } from "~/components/ui/button";
 
 const formSchema = z.object({
   email: z.string().email(),
+  password: z.string().min(1),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function EmailForm() {
+export function CredentialsForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
+      password: "",
     },
   });
 
@@ -43,6 +45,19 @@ export function EmailForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="viktor@malmedal.dev" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input placeholder="**************" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
